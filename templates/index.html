@@ -22,6 +22,50 @@ Licence URI: http://www.os-templates.com/template-terms
       type="text/css"
       media="all"
     />
+    <style>
+      .group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        margin: -10px; /* Negative margin to create space between columns */
+      }
+
+      .one_quarter {
+        box-sizing: border-box;
+        padding: 10px;
+        width: 25%; /* Set width to 25% for 4 columns in a row */
+      }
+
+      .one_quarter article {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+      }
+
+      .one_quarter time,
+      .one_quarter h4,
+      .one_quarter p {
+        flex: 0 0 auto;
+      }
+
+      .one_quarter .image-container {
+        height: 200px; /* Set a fixed height for the image container */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      .one_quarter img {
+        width: 100%; /* Make the image fill the container horizontally */
+        height: 100%; /* Make the image fill the container vertically */
+        object-fit: cover; /* Preserve the aspect ratio and cover the container */
+      }
+
+      .one_quarter footer {
+        margin-top: auto;
+      }
+    </style>
   </head>
   <body id="top">
     <!-- ############################################{% static '#################################################### -->
@@ -320,24 +364,20 @@ Licence URI: http://www.os-templates.com/template-terms
             A lacus blandit sodales mi a facilisis quam cras tincidunt.
           </p>
         </div>
+        {% comment %} This is the main blog page self edited code making
+        dynamic{% endcomment %}
         <div class="group">
-          <article class="one_quarter first">
-            <time class="block font-xs" datetime="2045-04-06"
-              >April 6, 2045</time
-            >
-            <h4 class="nospace font-x1">Auctor nulla lectus</h4>
-            <p class="btmspace-30">
-              Feugiat ac praesent dignissim metus ut tellus convallis non varius
-              nulla accumsan&hellip;
-            </p>
-            <a href="#"
-              ><img
-                class="btmspace-30"
-                src="{% static 'images/demo/380x320.png' %}"
-                alt=""
+          {%for posts in posts reversed%}
+          <article class="one_quarter">
+            <time class="block font-xs">{{posts.created_at}}</time>
+            <h4 class="nospace font-x1">{{posts.title}}</h4>
+            <p class="btmspace-30">{{posts.body|truncatechars:05}}&hellip;</p>
+            <a href="#" class="image-container"
+              ><img class="btmspace-30" src="{{posts.image}}" alt=""
             /></a>
-            <footer><a href="#">Read More &raquo;</a></footer>
+            <footer><a href="/post/{{posts.id}}">Read More &raquo;</a></footer>
           </article>
+          {% endfor %} {% comment %}
           <article class="one_quarter">
             <time class="block font-xs" datetime="2045-04-05"
               >April 5, 2045</time
@@ -389,6 +429,7 @@ Licence URI: http://www.os-templates.com/template-terms
             /></a>
             <footer><a href="#">Read More &raquo;</a></footer>
           </article>
+          {% endcomment %}
         </div>
         <!-- ################################################################################################ -->
       </section>
